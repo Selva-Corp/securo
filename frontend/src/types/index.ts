@@ -662,6 +662,49 @@ export interface SubscriptionScanResult {
   events: { kind: string; subscription_id: string; display_name: string; detail: Record<string, string> }[]
 }
 
+/** Alerts (fork feature). */
+export interface Notification {
+  id: string
+  kind: string
+  title: string
+  body: string
+  payload: Record<string, string>
+  entity_type: string | null
+  entity_id: string | null
+  delivered_channels: string[]
+  created_at: string
+  read_at: string | null
+}
+
+export interface NotificationPreferences {
+  kinds: Record<string, boolean>
+  large_transaction_amount: number
+  low_balance_amount: number
+  reminder_days_before: number
+  unusual_spend_pct: number
+  daily_digest_hour: number
+  in_app_enabled: boolean
+  ntfy_enabled: boolean
+  ntfy_server_url: string
+  ntfy_topic: string | null
+  has_ntfy_token: boolean
+}
+
+export interface NotificationPreferencesUpdate {
+  kinds?: Record<string, boolean>
+  large_transaction_amount?: number
+  low_balance_amount?: number
+  reminder_days_before?: number
+  unusual_spend_pct?: number
+  daily_digest_hour?: number
+  in_app_enabled?: boolean
+  ntfy_enabled?: boolean
+  ntfy_server_url?: string
+  ntfy_topic?: string
+  ntfy_token?: string
+  clear_ntfy_token?: boolean
+}
+
 export interface ProjectedTransaction {
   recurring_id: string
   account_id: string | null

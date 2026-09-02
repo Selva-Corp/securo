@@ -61,6 +61,7 @@ class ModuleId(str, Enum):
     INVOICES = "invoices"
     # Fork modules (see FORK.md). Default-on so existing users get them.
     SUBSCRIPTIONS = "subscriptions"
+    NOTIFICATIONS = "notifications"
 
 
 @dataclass(frozen=True)
@@ -90,6 +91,7 @@ CATALOG: Mapping[ModuleId, ModuleSpec] = {
         ModuleSpec(ModuleId.RULES, default_enabled=True),
         ModuleSpec(ModuleId.INVOICES, default_enabled=False),
         ModuleSpec(ModuleId.SUBSCRIPTIONS, default_enabled=True),
+        ModuleSpec(ModuleId.NOTIFICATIONS, default_enabled=True),
     )
 }
 

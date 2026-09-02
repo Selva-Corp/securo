@@ -69,6 +69,13 @@ ALLOWLIST: dict[tuple[str, str], str] = {
     ("POST", "/api/workspaces/{workspace_id}/members"): "owner floor inside the handler",
     ("PATCH", "/api/workspaces/{workspace_id}/members/{member_user_id}"): "owner floor inside the handler",
     ("DELETE", "/api/workspaces/{workspace_id}/members/{member_user_id}"): "owner floor inside the handler",
+    # Fork (alerts): the requester's own inbox and alert settings. Viewers
+    # get notifications too, so the workspace write gate would be wrong here;
+    # every handler scopes by ctx.user_id.
+    ("POST", "/api/notifications/read-all"): "the requester's own inbox",
+    ("POST", "/api/notifications/{notification_id}/read"): "the requester's own inbox",
+    ("PUT", "/api/notifications/preferences"): "the requester's own alert settings",
+    ("POST", "/api/notifications/test"): "pushes a probe to the requester's own ntfy topic; persists nothing",
     # Deliberate: a POST that persists nothing. See the comment on the route.
     ("POST", "/api/transactions/import/preview"): "parses an upload and returns a preview; writes nothing",
     # Same shape for investment orders: the upload has to be a body, and the

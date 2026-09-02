@@ -65,6 +65,9 @@ import type {
   TransactionEditPayload,
   InstallmentSeriesInput,
   TransactionApplyScope,
+  Notification,
+  NotificationPreferences,
+  NotificationPreferencesUpdate,
   Subscription,
   SubscriptionDetail,
   SubscriptionScanResult,
@@ -1046,6 +1049,38 @@ export const subscriptions = {
   },
   restore: async (id: string): Promise<Subscription> => {
     const { data } = await api.post(`/subscriptions/${id}/restore`)
+    return data
+  },
+}
+
+// Alerts (fork feature)
+export const notifications = {
+  list: async (params?: { unread_only?: boolean; limit?: number; before?: string }): Promise<Notification[]> => {
+    const { data } = await api.get('/notifications', { params })
+    return data
+  },
+  unreadCount: async (): Promise<{ count: number }> => {
+    const { data } = await api.get('/notifications/unread-count')
+    return data
+  },
+  markRead: async (id: string): Promise<Notification> => {
+    const { data } = await api.post(`/notifications/${id}/read`)
+    return data
+  },
+  markAllRead: async (): Promise<{ count: number }> => {
+    const { data } = await api.post('/notifications/read-all')
+    return data
+  },
+  getPreferences: async (): Promise<NotificationPreferences> => {
+    const { data } = await api.get('/notifications/preferences')
+    return data
+  },
+  updatePreferences: async (update: NotificationPreferencesUpdate): Promise<NotificationPreferences> => {
+    const { data } = await api.put('/notifications/preferences', update)
+    return data
+  },
+  sendTest: async (): Promise<{ ok: boolean; error: string | null }> => {
+    const { data } = await api.post('/notifications/test')
     return data
   },
 }

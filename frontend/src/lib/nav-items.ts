@@ -1,6 +1,7 @@
 import {
   ArrowLeftRight,
   BarChart3,
+  Bell,
   Building2,
   CreditCard,
   Landmark,
@@ -48,6 +49,7 @@ export const navItems: NavItem[] = [
   { type: 'link', key: 'goals', path: '/goals', icon: Target, module: 'goals' },
   { type: 'link', key: 'recurring', path: '/recurring', icon: Repeat, module: 'recurring' },
   { type: 'link', key: 'subscriptions', path: '/subscriptions', icon: CreditCard, module: 'subscriptions' },
+  { type: 'link', key: 'notifications', path: '/notifications', icon: Bell, module: 'notifications' },
   { type: 'link', key: 'categories', path: '/categories', icon: Tag, module: 'categories' },
   { type: 'link', key: 'payees', path: '/payees', icon: Users, module: 'payees' },
   { type: 'link', key: 'splitGroups', path: '/groups', icon: Split, module: 'split_groups' },

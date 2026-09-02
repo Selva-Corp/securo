@@ -127,7 +127,8 @@
     "groupAgents": "IA",
     "agents": "Agentes",
     "aiAgents": "Agentes IA",
-    "subscriptions": "Assinaturas"
+    "subscriptions": "Assinaturas",
+    "notifications": "Notificações"
   },
   "invoices": {
     "title": "Cobranças",
@@ -2045,6 +2046,76 @@
       "name": "Name",
       "amount": "Amount",
       "cadence": "Cadence"
+    }
+  },
+  "notifications": {
+    "title": "Notificações",
+    "bellUnread": "{{count}} unread notifications",
+    "empty": "You're all caught up",
+    "emptyHint": "Alerts about upcoming bills, subscriptions, budgets and balances show up here.",
+    "markAllRead": "Mark all read",
+    "viewAll": "View all notifications",
+    "justNow": "just now",
+    "kinds": {
+      "upcoming_bill": {
+        "label": "Upcoming bills",
+        "description": "A reminder a few days before a tracked bill is due."
+      },
+      "new_subscription_detected": {
+        "label": "New subscription found",
+        "description": "A recurring charge appeared in your history."
+      },
+      "price_increase": {
+        "label": "Price increases",
+        "description": "A subscription started charging more."
+      },
+      "charge_after_cancel": {
+        "label": "Charged after cancelling",
+        "description": "A cancelled subscription charged you again."
+      },
+      "large_transaction": {
+        "label": "Large transactions",
+        "description": "A single charge above your threshold."
+      },
+      "low_balance": {
+        "label": "Low balance",
+        "description": "A cash account dropped below your threshold."
+      },
+      "unusual_spend": {
+        "label": "Unusual spending",
+        "description": "A category is running well above its 3-month average."
+      },
+      "budget_exceeded": {
+        "label": "Budget exceeded",
+        "description": "Spending passed a category budget this month."
+      },
+      "sync_failed": {
+        "label": "Bank sync problems",
+        "description": "A connection needs reconnecting."
+      }
+    },
+    "preferences": {
+      "title": "Alert settings",
+      "subtitle": "Choose what Securo should tell you about, and where.",
+      "kinds": "Alerts",
+      "thresholds": "Thresholds",
+      "largeTransaction": "Large transaction over",
+      "lowBalance": "Low balance under",
+      "reminderDays": "Bill reminder (days before)",
+      "unusualPct": "Unusual spending (% above average)",
+      "digestHour": "Daily check hour (0–23)",
+      "digestHourHint": "Daily alerts are computed once a day at this hour in your timezone.",
+      "ntfy": "Push notifications (ntfy)",
+      "ntfyHint": "Install the ntfy app, subscribe to a private topic, and enter it here.",
+      "ntfyServer": "Server",
+      "ntfyTopic": "Topic",
+      "ntfyToken": "Access token",
+      "ntfyTokenOptional": "Optional, for protected topics",
+      "ntfyClearToken": "Remove token",
+      "sendTest": "Send test",
+      "saved": "Alert settings saved",
+      "testSent": "Test notification sent",
+      "testFailed": "Test failed: {{error}}"
     }
   }
 }

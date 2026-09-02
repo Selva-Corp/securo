@@ -35,6 +35,7 @@ import { UpdateAvailableDialog } from '@/components/update-available-dialog'
 import { WorkspaceSwitcher } from '@/components/workspace-switcher'
 import { navItems, visibleNavItems, type NavItem } from '@/lib/nav-items'
 import {
+  Bell,
   Menu,
   ChevronRight,
   Eye,
@@ -55,6 +56,7 @@ import { BackupDialog } from '@/components/backup-dialog'
 import { TwoFactorSetup } from '@/components/two-factor-setup'
 import { PasskeyManagementDialog } from '@/components/passkey-management-dialog'
 import { CommandPalette } from '@/components/command-palette'
+import { NotificationBell } from '@/components/notifications/notification-bell'
 import { useCommandPaletteHotkey } from '@/hooks/use-command-palette-hotkey'
 import { GlobalChatPanel } from '@/components/global-chat-panel'
 import { useFeatureFlags } from '@/hooks/use-feature-flags'
@@ -225,6 +227,9 @@ export function AppLayout() {
           >
             <Search size={18} />
           </button>
+          {hasModule('notifications') && (
+            <NotificationBell size={18} className="text-sidebar-muted hover:text-sidebar-foreground" />
+          )}
           <button
             onClick={togglePrivacyMode}
             className="text-sidebar-muted hover:text-sidebar-foreground transition-colors p-1"
@@ -303,6 +308,9 @@ export function AppLayout() {
               </span>
             </Link>
             <div className="flex items-center gap-0.5">
+              {hasModule('notifications') && (
+                <NotificationBell size={16} className="text-sidebar-muted hover:text-sidebar-foreground rounded-md hover:bg-sidebar-accent" />
+              )}
               <button
                 onClick={togglePrivacyMode}
                 className="text-sidebar-muted hover:text-sidebar-foreground transition-colors p-1 rounded-md hover:bg-sidebar-accent"
@@ -614,6 +622,13 @@ function UserMenu({
             <DropdownMenuSeparator />
           </>
         )}
+        <DropdownMenuItem
+          onClick={() => nav('/notifications')}
+          className="flex items-center gap-2"
+        >
+          <Bell size={14} />
+          {t('notifications.title')}
+        </DropdownMenuItem>
         {localAuthEnabled && (
           <>
             <DropdownMenuItem
