@@ -30,11 +30,13 @@ Never rebase `selva`: migrations already applied on the NAS must keep their ids.
 
 New behaviour lives in new files. Upstream files we edit, and nothing else:
 `backend/app/services/module_service.py` (catalog entries), `frontend/src/lib/modules.ts`,
-`frontend/src/lib/nav-items.ts`, `frontend/src/App.tsx`, `backend/app/main.py` (router
+`frontend/src/lib/nav-items.ts`, `frontend/src/App.tsx` (routes; `/` now renders `pages/home-route.tsx`), `backend/app/main.py` (router
 registration), `backend/app/worker.py` (beat schedule/include), two post-sync hook lines in
 `backend/app/tasks/sync_tasks.py`, one post-import line in `backend/app/api/import_transactions.py`,
-`frontend/src/components/app-layout.tsx`, `frontend/index.html`, the biweekly frequency in two
-recurring service functions, and the two module-list tests. If a change needs more than that,
+`frontend/src/components/app-layout.tsx` (bell, tab bar, menu item), `frontend/index.html`, the biweekly
+frequency in two recurring service functions, two `conn.status = "error"` hook lines in
+`backend/app/services/connection_service.py`, the two module-list tests, and the allowlist in
+`backend/tests/test_write_permission_coverage.py` (per-user inbox routes). If a change needs more than that,
 stop and think about an extension seam instead.
 
 ## Migrations
