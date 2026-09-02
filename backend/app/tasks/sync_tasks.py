@@ -10,7 +10,7 @@ from app.worker import celery_app
 from app.core.config import get_settings
 from app.models.bank_connection import BankConnection
 from app.providers.base import ProviderNotConfiguredError
-from app.services import connection_service
+from app.services import connection_service, subscription_service
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +77,8 @@ async def _sync_one(session_maker, connection_id: uuid.UUID, user_id: uuid.UUID)
         await connection_service.sync_connection(
             session, connection_id, workspace_id, user_id
         )
+        # Fork: refresh the subscriptions hub from the charges that just landed.
+        await subscription_service.scan_workspace_safely(session, workspace_id, user_id)
 
 
 @celery_app.task(name="app.tasks.sync_tasks.sync_all_connections")
@@ -111,6 +113,9 @@ async def _sync_one_celery(connection_id: str, user_id: str) -> None:
                 return
             await connection_service.sync_connection(
                 session, conn_uuid, workspace_id, uuid.UUID(user_id)
+            )
+            await subscription_service.scan_workspace_safely(
+                session, workspace_id, uuid.UUID(user_id)
             )
     finally:
         await engine.dispose()

@@ -13,6 +13,7 @@ from app.core.workspace_context import (
 )
 from app.schemas.transaction import TransactionImportPreview, TransactionImportRequest
 from app.services import account_service, import_service
+from app.services import subscription_service
 
 logger = logging.getLogger(__name__)
 
@@ -164,6 +165,8 @@ async def import_transactions(
         filename=data.filename, detected_format=data.detected_format,
         detect_duplicates=data.detect_duplicates,
     )
+    if imported:
+        await subscription_service.scan_workspace_safely(session, ctx.workspace.id, ctx.user_id)
 
     return {
         "imported": imported,

@@ -39,6 +39,10 @@ celery_app.conf.beat_schedule = {
         # AssetValue so history stays at one row per day per asset.
         "schedule": 60 * 60 * 24,
     },
+    "scan-subscriptions-daily": {
+        "task": "app.tasks.subscription_tasks.scan_all_subscriptions",
+        "schedule": 60 * 60 * 24,  # sync/import rescan inline; this catches manual edits
+    },
     "sync-fx-rates-daily": {
         "task": "app.tasks.fx_rate_tasks.sync_fx_rates",
         "schedule": 60 * 60 * 12,  # twice daily (~60 API calls/month)
@@ -58,6 +62,7 @@ celery_app.conf.beat_schedule = {
 celery_app.conf.include = [
     "app.tasks.sync_tasks",
     "app.tasks.recurring_tasks",
+    "app.tasks.subscription_tasks",
     "app.tasks.asset_tasks",
     "app.tasks.fx_rate_tasks",
     # Optional agents module — registering the import is harmless when

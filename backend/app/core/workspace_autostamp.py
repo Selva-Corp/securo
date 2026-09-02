@@ -19,6 +19,7 @@ from sqlalchemy import event, select
 from sqlalchemy.orm import Mapper, Session
 
 from app.models.account import Account
+from app.models.subscription import Subscription
 from app.models.asset import Asset
 from app.models.asset_group import AssetGroup
 from app.models.asset_value import AssetValue
@@ -41,6 +42,7 @@ from app.models.workspace import Workspace, WorkspaceMember
 
 
 _AUTOSTAMP_MODELS = (
+    Subscription,
     Account,
     Asset,
     AssetGroup,

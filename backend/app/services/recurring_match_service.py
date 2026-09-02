@@ -52,6 +52,8 @@ def _match_window(frequency: str) -> tuple[int, int]:
     """
     if frequency == "weekly":
         return 2, 2
+    if frequency == "biweekly":
+        return 2, 3
     # monthly / yearly
     return 3, 5
 

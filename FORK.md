@@ -31,8 +31,8 @@ Never rebase `selva`: migrations already applied on the NAS must keep their ids.
 New behaviour lives in new files. Upstream files we edit, and nothing else:
 `backend/app/services/module_service.py` (catalog entries), `frontend/src/lib/modules.ts`,
 `frontend/src/lib/nav-items.ts`, `frontend/src/App.tsx`, `backend/app/main.py` (router
-registration), `backend/app/worker.py` (beat schedule/include), two hook lines in
-`backend/app/services/connection_service.py`, one in `backend/app/api/import_transactions.py`,
+registration), `backend/app/worker.py` (beat schedule/include), two post-sync hook lines in
+`backend/app/tasks/sync_tasks.py`, one post-import line in `backend/app/api/import_transactions.py`,
 `frontend/src/components/app-layout.tsx`, `frontend/index.html`, the biweekly frequency in two
 recurring service functions, and the two module-list tests. If a change needs more than that,
 stop and think about an extension seam instead.
@@ -40,8 +40,8 @@ stop and think about an extension seam instead.
 ## Migrations
 
 Fork migrations use non-numeric revision ids so they can never collide with upstream by
-name: files are still numbered for ordering (`077_selva_subscriptions.py`) but carry
-`revision = "selva_001"`, `revision = "selva_002"`, and so on. The first one has
+name: the filename prefix must equal the revision id (the chain checker enforces it), so files are named `selva001_subscriptions.py` and carry
+`revision = "selva001"`, `revision = "selva002"`, and so on; they sort after upstream's numeric ids. The first one has
 `down_revision = "076"` (upstream's head at fork time).
 
 When upstream later adds its own `077` (also `down_revision = "076"`), the chain forks and
@@ -50,10 +50,10 @@ upstream** migration onto the fork's current head:
 
 ```python
 # in the upstream file, e.g. 077_something.py
-down_revision = "selva_002"   # was "076"
+down_revision = "selva002"   # was "076"
 ```
 
-Re-parent upstream's file, not ours: the NAS database already has `selva_00N` stamped in
+Re-parent upstream's file, not ours: the NAS database already has `selva00N` stamped in
 `alembic_version`, so our chain must stay exactly as deployed. One line per merge.
 
 Constraints inherited from upstream tests: the suite runs on SQLite, so new models use
