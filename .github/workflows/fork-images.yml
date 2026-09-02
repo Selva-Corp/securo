@@ -3,8 +3,8 @@
 # `docker compose pull`. Upstream's release.yml (release-triggered, multi-arch,
 # plus the Helm chart) is left untouched to keep upstream merges trivial.
 #
-# amd64 only: the NAS (UGREEN, Debian) is x86_64 and the Python 3.14 layer is
-# cached per-arch, so dropping arm64 halves the build time.
+# Multi-arch like upstream: the NAS (UGREEN, Debian) is arm64 and the Mac is
+# arm64 too; amd64 is kept so the images stay usable anywhere.
 name: Fork images (selva)
 
 on:
@@ -46,12 +46,15 @@ jobs:
             type=raw,value=latest
             type=sha,prefix=,format=short
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
       - name: Build and push backend image
         uses: docker/build-push-action@v7
         with:
           context: ./backend
           file: ./backend/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -92,12 +95,15 @@ jobs:
             type=raw,value=latest
             type=sha,prefix=,format=short
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
       - name: Build and push frontend image
         uses: docker/build-push-action@v7
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

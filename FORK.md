@@ -66,7 +66,7 @@ Constraints inherited from upstream tests: the suite runs on SQLite, so new mode
 ## Images and rollout
 
 `.github/workflows/fork-images.yml` builds `ghcr.io/<owner>/securo-backend` and
-`securo-frontend` (amd64, tags `latest` + short sha) on every push to `selva`. The
+`securo-frontend` (amd64 + arm64 — the NAS is arm64 — tags `latest` + short sha) on every push to `selva`. The
 packages must be **public** on GHCR (Packages → package settings → Change visibility),
 otherwise the NAS needs a `docker login ghcr.io`. GHCR lowercases the owner name; use
 the lowercase form in compose.
