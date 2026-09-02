@@ -49,6 +49,9 @@ class Settings(BaseSettings):
 
     # Frontend
     frontend_url: str = "http://localhost:5173"
+    # Fork: base URL that push notifications link back to. Phones reaching the
+    # app through a tunnel may need a different host than FRONTEND_URL.
+    notification_click_base_url: str = ""
 
     # WebAuthn / passkeys
     webauthn_rp_name: str = "Securo"

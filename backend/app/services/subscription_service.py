@@ -170,8 +170,13 @@ async def scan_workspace(
     workspace_id: uuid.UUID,
     user_id: uuid.UUID,
     today: Optional[date] = None,
+    deliver_alerts: bool = False,
 ) -> ScanResult:
-    """Detect series in the workspace's history and upsert Subscription rows."""
+    """Detect series in the workspace's history and upsert Subscription rows.
+
+    `deliver_alerts` pushes resulting alerts right away (worker callers); request
+    callers leave it False and the minute-ly delivery sweep sends them.
+    """
     today = today or date.today()
     now = datetime.now(timezone.utc)
     since = today - timedelta(days=HISTORY_MONTHS * 31)
@@ -255,15 +260,22 @@ async def scan_workspace(
     await session.commit()
     for event in result.events:
         await session.refresh(event.subscription)
+    if result.events:
+        from app.services import notification_service  # local: avoids an import cycle
+
+        await notification_service.notify_subscription_events(
+            session, workspace_id, user_id, result.events, deliver=deliver_alerts
+        )
+        await session.commit()
     return result
 
 
 async def scan_workspace_safely(
-    session: AsyncSession, workspace_id: uuid.UUID, user_id: uuid.UUID
+    session: AsyncSession, workspace_id: uuid.UUID, user_id: uuid.UUID, deliver_alerts: bool = False
 ) -> Optional[ScanResult]:
     """Scan after a sync/import without letting a detector bug fail the caller."""
     try:
-        return await scan_workspace(session, workspace_id, user_id)
+        return await scan_workspace(session, workspace_id, user_id, deliver_alerts=deliver_alerts)
     except Exception:
         logger.exception("Subscription scan failed for workspace %s", workspace_id)
         await session.rollback()

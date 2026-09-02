@@ -2043,6 +2043,7 @@ async def sync_connection(
             conn = await session.get(BankConnection, connection_id)
             if conn:
                 conn.status = "error"
+                await _notify_sync_failed(session, conn)  # fork: alerts
         raise
     except ProviderRateLimited:
         # The bank/aggregator is throttling data requests (PSD2 caps unattended
@@ -2066,6 +2067,7 @@ async def sync_connection(
             conn = await session.get(BankConnection, connection_id)
             if conn:
                 conn.status = "error"
+                await _notify_sync_failed(session, conn)  # fork: alerts
         raise
 
 
@@ -2125,3 +2127,19 @@ async def delete_connection(
 
     await session.commit()
     return True
+
+
+async def _notify_sync_failed(session: AsyncSession, conn: "BankConnection") -> None:
+    """Fork hook: raise a sync_failed alert (deduped per connection per day)."""
+    from app.services import notification_service  # local: avoids an import cycle
+
+    try:
+        await notification_service.notify_sync_failed(
+            session,
+            workspace_id=conn.workspace_id,
+            user_id=conn.user_id,
+            connection_id=conn.id,
+            name=getattr(conn, "institution_name", None) or conn.provider or "Bank connection",
+        )
+    except Exception:  # never let an alert break the sync error path
+        logger.exception("sync_failed alert could not be recorded for %s", conn.id)

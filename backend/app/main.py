@@ -22,6 +22,7 @@ from app.api.import_transactions import router as import_router
 from app.api.info import router as info_router
 from app.api.recurring_transactions import router as recurring_router
 from app.api.subscriptions import router as subscriptions_router
+from app.api.notifications import router as notifications_router
 from app.api.rules import router as rules_router
 from app.api.assets import router as assets_router
 from app.api.asset_groups import router as asset_groups_router
@@ -171,6 +172,7 @@ app.include_router(accounts_router)
 app.include_router(connections_router)
 app.include_router(recurring_router)
 app.include_router(subscriptions_router)
+app.include_router(notifications_router)
 app.include_router(budgets_router)
 app.include_router(goals_router)
 app.include_router(groups_router)

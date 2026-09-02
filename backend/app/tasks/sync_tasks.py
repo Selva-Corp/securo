@@ -78,7 +78,7 @@ async def _sync_one(session_maker, connection_id: uuid.UUID, user_id: uuid.UUID)
             session, connection_id, workspace_id, user_id
         )
         # Fork: refresh the subscriptions hub from the charges that just landed.
-        await subscription_service.scan_workspace_safely(session, workspace_id, user_id)
+        await subscription_service.scan_workspace_safely(session, workspace_id, user_id, deliver_alerts=True)
 
 
 @celery_app.task(name="app.tasks.sync_tasks.sync_all_connections")
@@ -115,7 +115,7 @@ async def _sync_one_celery(connection_id: str, user_id: str) -> None:
                 session, conn_uuid, workspace_id, uuid.UUID(user_id)
             )
             await subscription_service.scan_workspace_safely(
-                session, workspace_id, uuid.UUID(user_id)
+                session, workspace_id, uuid.UUID(user_id), deliver_alerts=True
             )
     finally:
         await engine.dispose()

@@ -43,6 +43,14 @@ celery_app.conf.beat_schedule = {
         "task": "app.tasks.subscription_tasks.scan_all_subscriptions",
         "schedule": 60 * 60 * 24,  # sync/import rescan inline; this catches manual edits
     },
+    "alert-sweep-hourly": {
+        "task": "app.tasks.notification_tasks.run_alert_sweep",
+        "schedule": 60 * 60,  # daily producers fire at the user's digest hour; dedupe keys make reruns no-ops
+    },
+    "deliver-notifications-minutely": {
+        "task": "app.tasks.notification_tasks.deliver_pending_notifications",
+        "schedule": 60,
+    },
     "sync-fx-rates-daily": {
         "task": "app.tasks.fx_rate_tasks.sync_fx_rates",
         "schedule": 60 * 60 * 12,  # twice daily (~60 API calls/month)
@@ -63,6 +71,7 @@ celery_app.conf.include = [
     "app.tasks.sync_tasks",
     "app.tasks.recurring_tasks",
     "app.tasks.subscription_tasks",
+    "app.tasks.notification_tasks",
     "app.tasks.asset_tasks",
     "app.tasks.fx_rate_tasks",
     # Optional agents module — registering the import is harmless when
