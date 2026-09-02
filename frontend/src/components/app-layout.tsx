@@ -57,6 +57,7 @@ import { TwoFactorSetup } from '@/components/two-factor-setup'
 import { PasskeyManagementDialog } from '@/components/passkey-management-dialog'
 import { CommandPalette } from '@/components/command-palette'
 import { NotificationBell } from '@/components/notifications/notification-bell'
+import { BottomTabBar } from '@/components/mobile/bottom-tab-bar'
 import { useCommandPaletteHotkey } from '@/hooks/use-command-palette-hotkey'
 import { GlobalChatPanel } from '@/components/global-chat-panel'
 import { useFeatureFlags } from '@/hooks/use-feature-flags'
@@ -199,7 +200,7 @@ export function AppLayout() {
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile header */}
-      <header className="sticky top-0 z-40 flex h-14 items-center gap-3 bg-sidebar border-b border-sidebar-border px-4 lg:hidden">
+      <header className="sticky top-0 z-40 flex min-h-14 items-center gap-3 bg-sidebar border-b border-sidebar-border px-4 pt-[env(safe-area-inset-top)] lg:hidden">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="text-sidebar-muted hover:text-sidebar-foreground transition-colors"
@@ -526,13 +527,15 @@ export function AppLayout() {
 
         {/* Main content */}
         <main className="flex-1 min-h-screen overflow-x-hidden lg:ml-60">
-          <div className="p-6 max-w-7xl mx-auto">
+          <div className="p-6 pb-24 md:pb-6 max-w-7xl mx-auto">
             {/* Active-collection filter (issue #105): sticky bar above the
                 content so the scope is visible right where the data is. */}
             <CollectionSelector variant="header" />
             <Outlet />
           </div>
         </main>
+        {/* Fork: phone tab bar, below md only (see components/mobile). */}
+        <BottomTabBar onMore={() => setSidebarOpen(true)} />
       </div>
 
       {showTour && <OnboardingTour onComplete={handleTourComplete} />}

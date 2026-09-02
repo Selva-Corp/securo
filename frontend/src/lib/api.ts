@@ -65,6 +65,7 @@ import type {
   TransactionEditPayload,
   InstallmentSeriesInput,
   TransactionApplyScope,
+  MobileSummary,
   Notification,
   NotificationPreferences,
   NotificationPreferencesUpdate,
@@ -1168,6 +1169,10 @@ export const dashboard = {
   },
   projectedTransactions: async (params?: { month?: string; account_id?: string; from?: string; to?: string }): Promise<ProjectedTransaction[]> => {
     const { data } = await api.get('/dashboard/projected-transactions', { params })
+    return data
+  },
+  mobileSummary: async (): Promise<MobileSummary> => {
+    const { data } = await api.get('/dashboard/mobile-summary')
     return data
   },
   balanceHistory: async (month?: string, accountIds?: string[]): Promise<BalanceHistory> => {

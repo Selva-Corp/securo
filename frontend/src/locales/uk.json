@@ -2125,5 +2125,40 @@
       "testSent": "Test notification sent",
       "testFailed": "Test failed: {{error}}"
     }
+  },
+  "home": {
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "safeToSpend": "Safe to spend",
+    "perDay": "{{amount}} a day for the next {{count}} days",
+    "howCalculated": "How is this calculated?",
+    "cashOnHand": "Cash in accounts",
+    "billsDueThisMonth": "Bills still due this month",
+    "budgetsLeft": "Budgets not yet spent",
+    "upcoming": "Coming up",
+    "nothingDue": "Nothing due in the next 30 days.",
+    "dueTomorrow": "Due tomorrow",
+    "budgets": "Budgets",
+    "left": "{{amount}} left",
+    "over": "{{amount}} over",
+    "recent": "Recent activity",
+    "noTransactions": "No transactions yet.",
+    "netWorth": "Net worth",
+    "thisMonth": "this month",
+    "actions": {
+      "add": "Add",
+      "import": "Import",
+      "subscriptions": "Subscriptions",
+      "budgets": "Budgets"
+    },
+    "tabs": {
+      "aria": "Main navigation",
+      "home": "Home",
+      "transactions": "Activity",
+      "subscriptions": "Subscriptions",
+      "budgets": "Budgets",
+      "more": "More"
+    }
   }
 }

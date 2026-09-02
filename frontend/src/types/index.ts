@@ -705,6 +705,27 @@ export interface NotificationPreferencesUpdate {
   clear_ntfy_token?: boolean
 }
 
+/** Phone home screen (fork feature). */
+export interface MobileSummary {
+  primary_currency: string
+  as_of: string
+  days_left_in_month: number
+  cash_balance_primary: number
+  upcoming_bills_primary: number
+  budget_remaining_primary: number
+  safe_to_spend_primary: number
+  safe_per_day_primary: number
+  upcoming: {
+    id: string
+    kind: 'bill' | 'subscription'
+    name: string
+    date: string
+    amount: number
+    currency: string
+    amount_primary: number
+  }[]
+}
+
 export interface ProjectedTransaction {
   recurring_id: string
   account_id: string | null
