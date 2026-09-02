@@ -126,7 +126,8 @@
     "groupAdmin": "Администрирование",
     "groupAgents": "ИИ",
     "agents": "Агенты",
-    "aiAgents": "ИИ-агенты"
+    "aiAgents": "ИИ-агенты",
+    "subscriptions": "Подписки"
   },
   "invoices": {
     "title": "Счета",
@@ -858,7 +859,8 @@
     "autoGenerate": "Создавать транзакции автоматически",
     "autoGenerateHelp": "Создаёт транзакцию при каждом наступлении срока оплаты. Отключите, чтобы дождаться реального списания (например, из банковской синхронизации) и до тех пор показывать её только как предстоящую.",
     "fxEstimate": "Оценка на основе последнего курса ({{rate}}). Итоговая сумма может измениться.",
-    "confirmDeleteDescription": "Определение регулярной транзакции «{{description}}» будет удалено навсегда. Существующие транзакции останутся, но потеряют связь с регулярной транзакцией. Это действие нельзя отменить."
+    "confirmDeleteDescription": "Определение регулярной транзакции «{{description}}» будет удалено навсегда. Существующие транзакции останутся, но потеряют связь с регулярной транзакцией. Это действие нельзя отменить.",
+    "biweekly": "Каждые 2 недели"
   },
   "rules": {
     "preview": "Предпросмотр",
@@ -1970,6 +1972,87 @@
         "title": "Подключений пока нет",
         "subtitle": "Добавьте подключение, чтобы направить Securo на ваш локальный Ollama, OpenAI, Anthropic или любой совместимый с OpenAI эндпоинт."
       }
+    }
+  },
+  "subscriptions": {
+    "title": "Подписки",
+    "scanNow": "Scan now",
+    "scanning": "Scanning…",
+    "scanDone": "Scan complete: {{created}} new, {{updated}} updated",
+    "summary": {
+      "monthly": "Per month",
+      "annual": "Per year",
+      "active": "Active",
+      "upcoming": "Due in 30 days",
+      "alsoIn": "plus {{amounts}}",
+      "toReview": "{{count}} to review"
+    },
+    "tabs": {
+      "suggested": "Suggested",
+      "tracked": "Tracked",
+      "cancelled": "Cancelled",
+      "ignored": "Ignored"
+    },
+    "empty": {
+      "title": "No subscriptions found yet",
+      "body": "Securo looks for charges that repeat at a regular cadence. Sync or import at least three months of transactions, then scan.",
+      "suggested": "Nothing new to review.",
+      "tracked": "Track a suggestion to see it here.",
+      "cancelled": "No cancelled subscriptions.",
+      "ignored": "Nothing ignored."
+    },
+    "cadence": {
+      "weekly": "Weekly",
+      "biweekly": "Каждые 2 недели",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly"
+    },
+    "perMonth": "{{amount}}/mo",
+    "nextIn": "Due in {{count}} days ({{date}})",
+    "dueToday": "Due today",
+    "overdue": "Expected {{date}}",
+    "lastCharge": "Last charge",
+    "firstSeen": "First seen",
+    "occurrences": "{{count}} charges",
+    "confidence": "confidence",
+    "priceUp": "Price increased",
+    "priceDown": "Price dropped",
+    "lapsed": "No recent charges",
+    "cancelledOn": "Cancelled {{date}}",
+    "trackedHint": "Tracked subscriptions show up in Recurring, the calendar and upcoming-bill totals.",
+    "actions": {
+      "track": "Track",
+      "ignore": "Ignore",
+      "cancel": "Mark cancelled",
+      "restore": "Restore",
+      "edit": "Edit"
+    },
+    "toasts": {
+      "track": "Now tracked as a recurring bill",
+      "ignore": "Subscription ignored",
+      "cancel": "Marked as cancelled. You'll be warned if it charges again.",
+      "restore": "Subscription restored",
+      "updated": "Subscription updated",
+      "scanFailed": "Scan failed"
+    },
+    "detail": {
+      "title": "Subscription",
+      "priceHistory": "Price history",
+      "charges": "Charges",
+      "amount": "Amount",
+      "nextExpected": "Next expected"
+    },
+    "cancelDialog": {
+      "title": "Mark as cancelled?",
+      "body": "Securo stops projecting this bill and warns you if a new charge shows up after the date below.",
+      "date": "Cancelled on",
+      "confirm": "Mark cancelled"
+    },
+    "form": {
+      "name": "Name",
+      "amount": "Amount",
+      "cadence": "Cadence"
     }
   }
 }

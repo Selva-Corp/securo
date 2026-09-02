@@ -59,6 +59,8 @@ class ModuleId(str, Enum):
     SPLIT_GROUPS = "split_groups"
     RULES = "rules"
     INVOICES = "invoices"
+    # Fork modules (see FORK.md). Default-on so existing users get them.
+    SUBSCRIPTIONS = "subscriptions"
 
 
 @dataclass(frozen=True)
@@ -87,6 +89,7 @@ CATALOG: Mapping[ModuleId, ModuleSpec] = {
         ModuleSpec(ModuleId.SPLIT_GROUPS, default_enabled=True),
         ModuleSpec(ModuleId.RULES, default_enabled=True),
         ModuleSpec(ModuleId.INVOICES, default_enabled=False),
+        ModuleSpec(ModuleId.SUBSCRIPTIONS, default_enabled=True),
     )
 }
 

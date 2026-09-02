@@ -126,7 +126,8 @@
     "groupAdmin": "Administration",
     "groupAgents": "AI",
     "agents": "Agents",
-    "aiAgents": "AI Agents"
+    "aiAgents": "AI Agents",
+    "subscriptions": "Subscriptions"
   },
   "invoices": {
     "title": "Invoices",
@@ -849,7 +850,8 @@
     "autoGenerate": "Generate transactions automatically",
     "autoGenerateHelp": "Create a transaction each time this bill is due. Turn off to wait for the real charge (e.g. from bank sync) and only show it as upcoming until then.",
     "fxEstimate": "Estimate based on latest exchange rate ({{rate}}). Final amount may change.",
-    "confirmDeleteDescription": "The recurring definition \"{{description}}\" will be permanently deleted. Existing transactions will remain but lose their recurring link. This action cannot be undone."
+    "confirmDeleteDescription": "The recurring definition \"{{description}}\" will be permanently deleted. Existing transactions will remain but lose their recurring link. This action cannot be undone.",
+    "biweekly": "Every 2 weeks"
   },
   "rules": {
     "preview": "Preview",
@@ -1961,6 +1963,87 @@
         "title": "No connections yet",
         "subtitle": "Add a connection to point Securo at your local Ollama, OpenAI, Anthropic, or any OpenAI-compatible endpoint."
       }
+    }
+  },
+  "subscriptions": {
+    "title": "Subscriptions",
+    "scanNow": "Scan now",
+    "scanning": "Scanning…",
+    "scanDone": "Scan complete: {{created}} new, {{updated}} updated",
+    "summary": {
+      "monthly": "Per month",
+      "annual": "Per year",
+      "active": "Active",
+      "upcoming": "Due in 30 days",
+      "alsoIn": "plus {{amounts}}",
+      "toReview": "{{count}} to review"
+    },
+    "tabs": {
+      "suggested": "Suggested",
+      "tracked": "Tracked",
+      "cancelled": "Cancelled",
+      "ignored": "Ignored"
+    },
+    "empty": {
+      "title": "No subscriptions found yet",
+      "body": "Securo looks for charges that repeat at a regular cadence. Sync or import at least three months of transactions, then scan.",
+      "suggested": "Nothing new to review.",
+      "tracked": "Track a suggestion to see it here.",
+      "cancelled": "No cancelled subscriptions.",
+      "ignored": "Nothing ignored."
+    },
+    "cadence": {
+      "weekly": "Weekly",
+      "biweekly": "Every 2 weeks",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly"
+    },
+    "perMonth": "{{amount}}/mo",
+    "nextIn": "Due in {{count}} days ({{date}})",
+    "dueToday": "Due today",
+    "overdue": "Expected {{date}}",
+    "lastCharge": "Last charge",
+    "firstSeen": "First seen",
+    "occurrences": "{{count}} charges",
+    "confidence": "confidence",
+    "priceUp": "Price increased",
+    "priceDown": "Price dropped",
+    "lapsed": "No recent charges",
+    "cancelledOn": "Cancelled {{date}}",
+    "trackedHint": "Tracked subscriptions show up in Recurring, the calendar and upcoming-bill totals.",
+    "actions": {
+      "track": "Track",
+      "ignore": "Ignore",
+      "cancel": "Mark cancelled",
+      "restore": "Restore",
+      "edit": "Edit"
+    },
+    "toasts": {
+      "track": "Now tracked as a recurring bill",
+      "ignore": "Subscription ignored",
+      "cancel": "Marked as cancelled. You'll be warned if it charges again.",
+      "restore": "Subscription restored",
+      "updated": "Subscription updated",
+      "scanFailed": "Scan failed"
+    },
+    "detail": {
+      "title": "Subscription",
+      "priceHistory": "Price history",
+      "charges": "Charges",
+      "amount": "Amount",
+      "nextExpected": "Next expected"
+    },
+    "cancelDialog": {
+      "title": "Mark as cancelled?",
+      "body": "Securo stops projecting this bill and warns you if a new charge shows up after the date below.",
+      "date": "Cancelled on",
+      "confirm": "Mark cancelled"
+    },
+    "form": {
+      "name": "Name",
+      "amount": "Amount",
+      "cadence": "Cadence"
     }
   }
 }

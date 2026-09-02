@@ -33,6 +33,7 @@ PERSONAL_MODULES = [
     "reports",
     "rules",
     "split_groups",
+    "subscriptions",
     "transactions",
 ]
 

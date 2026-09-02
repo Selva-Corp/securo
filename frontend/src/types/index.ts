@@ -573,7 +573,7 @@ export interface RecurringTransaction {
   amount: number
   currency: string
   type: 'debit' | 'credit'
-  frequency: 'monthly' | 'quarterly' | 'weekly' | 'yearly'
+  frequency: 'monthly' | 'quarterly' | 'weekly' | 'biweekly' | 'yearly'
   weekend_adjustment: 'none' | 'previous_friday' | 'next_monday'
   day_of_month: number | null
   start_date: string
@@ -583,6 +583,83 @@ export interface RecurringTransaction {
   next_occurrence: string
   amount_primary: number | null
   fx_rate_used: number | null
+}
+
+export type SubscriptionStatus = 'suggested' | 'tracked' | 'ignored' | 'cancelled'
+export type SubscriptionCadence = 'weekly' | 'biweekly' | 'monthly' | 'quarterly' | 'yearly'
+
+/** Subscriptions hub (fork feature): a recurring charge found in history. */
+export interface Subscription {
+  id: string
+  display_name: string
+  merchant_key: string
+  payee_id: string | null
+  account_id: string | null
+  category_id: string | null
+  currency: string
+  cadence: SubscriptionCadence
+  amount: number
+  average_amount: number
+  first_seen: string
+  last_seen: string
+  next_expected: string
+  occurrence_count: number
+  confidence: number
+  status: SubscriptionStatus
+  cancelled_at: string | null
+  recurring_transaction_id: string | null
+  price_history: { date: string; amount: number | string }[]
+  is_lapsed: boolean
+  monthly_equivalent: number
+  logo_url: string | null
+  last_scanned_at: string | null
+}
+
+export interface SubscriptionCharge {
+  id: string
+  date: string
+  amount: number
+  currency: string
+  description: string
+}
+
+export interface SubscriptionDetail extends Subscription {
+  charges: SubscriptionCharge[]
+}
+
+export interface SubscriptionUpdate {
+  display_name?: string
+  cadence?: SubscriptionCadence
+  amount?: number
+  payee_id?: string | null
+  category_id?: string | null
+  account_id?: string | null
+}
+
+export interface SubscriptionSummary {
+  totals: { currency: string; monthly: number; annual: number }[]
+  tracked_count: number
+  suggested_count: number
+  cancelled_count: number
+  ignored_count: number
+  upcoming: {
+    id: string
+    display_name: string
+    amount: number
+    currency: string
+    next_expected: string
+    cadence: SubscriptionCadence
+    status: SubscriptionStatus
+    logo_url: string | null
+  }[]
+  last_scanned_at: string | null
+}
+
+export interface SubscriptionScanResult {
+  created: number
+  updated: number
+  removed: number
+  events: { kind: string; subscription_id: string; display_name: string; detail: Record<string, string> }[]
 }
 
 export interface ProjectedTransaction {

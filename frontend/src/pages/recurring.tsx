@@ -392,6 +392,8 @@ function RecurringForm({
             <option value="monthly">{t('recurring.monthly')}</option>
             <option value="quarterly">{t('recurring.quarterly')}</option>
             <option value="weekly">{t('recurring.weekly')}</option>
+
+            <option value="biweekly">{t('recurring.biweekly')}</option>
             <option value="yearly">{t('recurring.yearly')}</option>
           </select>
         </div>

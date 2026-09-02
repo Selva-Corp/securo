@@ -44,7 +44,7 @@ import { CategorySelect } from '@/components/category-select'
 import { TransactionAttachments } from '@/components/transaction-attachments'
 import type { AttachmentPreview } from '@/components/transaction-attachments'
 import { TransactionSplitsSection } from '@/components/transaction-splits-section'
-import { buildInstallmentSeriesInput, hasNonStatusChange, isManualInstallmentSeriesRow } from '@/lib/installment-series'
+import { type InstallmentSeriesFormInput, buildInstallmentSeriesInput, hasNonStatusChange, isManualInstallmentSeriesRow } from '@/lib/installment-series'
 import { usePrivacyMode } from '@/hooks/use-privacy-mode'
 import type { Transaction, RecurringTransaction, TransactionSplitsInput, TransactionEditPayload, InstallmentSeriesInput, TransactionApplyScope, CategoryGroup, Category, Rule, RuleCondition } from '@/types'
 import { toast } from 'sonner'
@@ -455,7 +455,7 @@ function TransactionForm({
   // the transaction's own amount and status.
   const [isInstallment, setIsInstallment] = useState(false)
   const [installmentCount, setInstallmentCount] = useState('2')
-  const [installmentFrequency, setInstallmentFrequency] = useState<RecurringTransaction['frequency']>('monthly')
+  const [installmentFrequency, setInstallmentFrequency] = useState<InstallmentSeriesFormInput['installmentFrequency']>('monthly')
   // Optional split-with-group payload. `null` = leave splits as-is on
   // update, or no splits on create. The dedicated section component
   // owns its own UI state and surfaces a normalized payload here.
@@ -1203,6 +1203,8 @@ function TransactionForm({
                   <option value="monthly">{t('recurring.monthly')}</option>
                   <option value="quarterly">{t('recurring.quarterly')}</option>
                   <option value="weekly">{t('recurring.weekly')}</option>
+
+                  <option value="biweekly">{t('recurring.biweekly')}</option>
                   <option value="yearly">{t('recurring.yearly')}</option>
                 </select>
               </div>
@@ -1224,11 +1226,12 @@ function TransactionForm({
                 <select
                   className="w-full border border-border rounded-md px-3 py-2 text-sm bg-card focus:outline-none focus-visible:ring-ring/30 focus-visible:ring-[2px]"
                   value={installmentFrequency}
-                  onChange={(e) => setInstallmentFrequency(e.target.value as RecurringTransaction['frequency'])}
+                  onChange={(e) => setInstallmentFrequency(e.target.value as InstallmentSeriesFormInput['installmentFrequency'])}
                 >
                   <option value="monthly">{t('recurring.monthly')}</option>
                   <option value="quarterly">{t('recurring.quarterly')}</option>
                   <option value="weekly">{t('recurring.weekly')}</option>
+
                   <option value="yearly">{t('recurring.yearly')}</option>
                 </select>
               </div>

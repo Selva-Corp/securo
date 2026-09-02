@@ -20,6 +20,8 @@ export const MODULE_IDS = [
   'split_groups',
   'rules',
   'invoices',
+  // Fork modules (see FORK.md).
+  'subscriptions',
 ] as const
 
 export type ModuleId = (typeof MODULE_IDS)[number]

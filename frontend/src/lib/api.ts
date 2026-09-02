@@ -65,6 +65,12 @@ import type {
   TransactionEditPayload,
   InstallmentSeriesInput,
   TransactionApplyScope,
+  Subscription,
+  SubscriptionDetail,
+  SubscriptionScanResult,
+  SubscriptionStatus,
+  SubscriptionSummary,
+  SubscriptionUpdate,
 } from '@/types'
 
 const api = axios.create({
@@ -1000,6 +1006,46 @@ export const recurring = {
   },
   generate: async (): Promise<{ generated: number }> => {
     const { data } = await api.post('/recurring-transactions/generate')
+    return data
+  },
+}
+
+// Subscriptions hub (fork feature)
+export const subscriptions = {
+  list: async (status?: SubscriptionStatus): Promise<Subscription[]> => {
+    const { data } = await api.get('/subscriptions', { params: status ? { status } : undefined })
+    return data
+  },
+  summary: async (): Promise<SubscriptionSummary> => {
+    const { data } = await api.get('/subscriptions/summary')
+    return data
+  },
+  get: async (id: string): Promise<SubscriptionDetail> => {
+    const { data } = await api.get(`/subscriptions/${id}`)
+    return data
+  },
+  scan: async (): Promise<SubscriptionScanResult> => {
+    const { data } = await api.post('/subscriptions/scan')
+    return data
+  },
+  update: async (id: string, update: SubscriptionUpdate): Promise<Subscription> => {
+    const { data } = await api.patch(`/subscriptions/${id}`, update)
+    return data
+  },
+  track: async (id: string): Promise<Subscription> => {
+    const { data } = await api.post(`/subscriptions/${id}/track`)
+    return data
+  },
+  ignore: async (id: string): Promise<Subscription> => {
+    const { data } = await api.post(`/subscriptions/${id}/ignore`)
+    return data
+  },
+  cancel: async (id: string, cancelledAt?: string): Promise<Subscription> => {
+    const { data } = await api.post(`/subscriptions/${id}/cancel`, cancelledAt ? { cancelled_at: cancelledAt } : {})
+    return data
+  },
+  restore: async (id: string): Promise<Subscription> => {
+    const { data } = await api.post(`/subscriptions/${id}/restore`)
     return data
   },
 }
