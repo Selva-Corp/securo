@@ -1,7 +1,7 @@
 """subscriptions hub: detected recurring charges (fork feature)
 
 Revision ID: selva001
-Revises: 076
+Revises: 085
 Create Date: 2026-09-02
 
 Fork migrations use non-numeric revision ids so they never collide with an
@@ -16,7 +16,7 @@ from alembic import op
 from sqlalchemy.dialects import postgresql
 
 revision: str = "selva001"
-down_revision: Union[str, None] = "076"
+down_revision: Union[str, None] = "085"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

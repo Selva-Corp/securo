@@ -33,6 +33,7 @@ from app.models.goal import Goal
 from app.models.group import Group, GroupMember
 from app.models.group_settlement import GroupSettlement
 from app.models.import_log import ImportLog
+from app.models.invoice import Invoice, InvoiceAllocation, InvoiceLine, InvoiceSettings
 from app.models.payee import Payee, PayeeMapping, PayeeTaxId
 from app.models.recurring_transaction import RecurringTransaction
 from app.models.rule import Rule
@@ -60,6 +61,10 @@ _AUTOSTAMP_MODELS = (
     GroupMember,
     GroupSettlement,
     ImportLog,
+    Invoice,
+    InvoiceAllocation,
+    InvoiceLine,
+    InvoiceSettings,
     Payee,
     PayeeMapping,
     PayeeTaxId,

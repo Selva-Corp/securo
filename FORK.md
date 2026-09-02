@@ -43,8 +43,8 @@ stop and think about an extension seam instead.
 
 Fork migrations use non-numeric revision ids so they can never collide with upstream by
 name: the filename prefix must equal the revision id (the chain checker enforces it), so files are named `selva001_subscriptions.py` and carry
-`revision = "selva001"`, `revision = "selva002"`, and so on; they sort after upstream's numeric ids. The first one has
-`down_revision = "076"` (upstream's head at fork time).
+`revision = "selva001"`, `revision = "selva002"`, and so on; they sort after upstream's numeric ids. The first one chains
+off upstream's head at the time the fork's migrations are first deployed (`085`).
 
 When upstream later adds its own `077` (also `down_revision = "076"`), the chain forks and
 `check_migration_chain.py` fails after the merge. Fix it by re-parenting the **incoming
@@ -55,8 +55,10 @@ upstream** migration onto the fork's current head:
 down_revision = "selva002"   # was "076"
 ```
 
-Re-parent upstream's file, not ours: the NAS database already has `selva00N` stamped in
-`alembic_version`, so our chain must stay exactly as deployed. One line per merge.
+Re-parent upstream's file, not ours, **once a `selva` migration has been applied on the NAS**: at that
+point `alembic_version` holds `selva00N` and our chain must stay exactly as deployed. Before that
+(as on 2026-09-02, when the NAS had already moved to upstream 0.15.0), do the opposite and move
+`selva001`'s `down_revision` onto upstream's new head. One line per merge either way.
 
 Constraints inherited from upstream tests: the suite runs on SQLite, so new models use
 `sa.JSON` (not JSONB) and no partial indexes.
@@ -85,8 +87,13 @@ Docker Desktop is not installed on the Mac. Run the backend and frontend nativel
 ```bash
 cd backend && uv sync --all-extras && uv run pytest -n auto --dist loadfile -q
 cd backend && uv run ruff check . && uv run ty check . && python3 scripts/check_migration_chain.py
-cd frontend && npm ci && npm run lint && npm run build && npm test
+cd frontend && npm ci && npm run lint && npm run build
+cd frontend && NODE_OPTIONS=--no-experimental-webstorage npm test
 ```
+
+The `NODE_OPTIONS` flag matters on Node 25+: its built-in Web Storage shadows jsdom's
+`localStorage` and every component test fails with `localStorage.clear is not a function`.
+Upstream CI runs an older Node and does not need it.
 
 Every new UI string must be added to **all 11** files in `frontend/src/locales/`; the
 locale test fails on a missing key (English placeholder text is acceptable).
