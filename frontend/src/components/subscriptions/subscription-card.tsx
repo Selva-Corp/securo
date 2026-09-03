@@ -49,7 +49,7 @@ export function SubscriptionCard({
   } else if (days === 0) {
     dueLabel = t('subscriptions.dueToday')
   } else if (days > 0) {
-    dueLabel = t('subscriptions.nextIn', { count: days, date: formatShortDate(sub.next_expected, dateLocale) })
+    dueLabel = t('subscriptions.nextIn', { count: days })
   } else {
     dueLabel = t('subscriptions.overdue', { date: formatShortDate(sub.next_expected, dateLocale) })
   }

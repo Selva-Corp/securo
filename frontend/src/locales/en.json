@@ -2253,7 +2253,7 @@
       "yearly": "Yearly"
     },
     "perMonth": "{{amount}}/mo",
-    "nextIn": "Due in {{count}} days ({{date}})",
+    "nextIn": "Due in {{count}} days",
     "dueToday": "Due today",
     "overdue": "Expected {{date}}",
     "lastCharge": "Last charge",

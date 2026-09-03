@@ -183,7 +183,7 @@ export function SubscriptionDetailSheet({
                             formatter={(value) => mask(formatCurrency(Number(value), current.currency, locale))}
                             contentStyle={{ fontSize: 12, borderRadius: 8 }}
                           />
-                          <Area type="monotone" dataKey="amount" stroke="var(--primary)" fill="url(#subscription-area)" strokeWidth={2} dot={false} />
+                          <Area type="linear" dataKey="amount" stroke="var(--primary)" fill="url(#subscription-area)" strokeWidth={2} dot={false} />
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>

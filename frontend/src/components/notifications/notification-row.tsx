@@ -35,7 +35,7 @@ export function NotificationRow({ notification: n, onOpen }: NotificationRowProp
       </span>
       <span className="min-w-0 flex-1">
         <span className="flex items-baseline justify-between gap-2">
-          <span className={cn('text-sm truncate', unread ? 'font-semibold text-foreground' : 'text-foreground')}>
+          <span className={cn('text-sm leading-snug line-clamp-2', unread ? 'font-semibold text-foreground' : 'text-foreground')}>
             {n.title}
           </span>
           <span className="text-[11px] text-muted-foreground shrink-0">
