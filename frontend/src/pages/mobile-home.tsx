@@ -25,7 +25,7 @@ import { NetWorthSparkline } from '@/components/mobile/net-worth-sparkline'
 export default function MobileHomePage() {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { hasModule, canWrite, current } = useWorkspace()
+  const { hasModule, current } = useWorkspace()
   const locale = useDisplayLocale()
   const dateLocale = useDateLocale()
   const { mask } = usePrivacyMode()
@@ -75,8 +75,8 @@ export default function MobileHomePage() {
         transactions={recent?.items}
         accounts={accounts}
         locale={locale}
-        userCurrency={userCurrency}
-        canWrite={canWrite}
+        dateLocale={dateLocale}
+        mask={mask}
       />
       <NetWorthSparkline summary={summary} history={history} locale={locale} mask={mask} />
     </div>

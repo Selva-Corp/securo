@@ -41,7 +41,14 @@ function Ring({ progress, color }: { progress: number; color: string }) {
 export function BudgetRings({ rows, currency, locale, mask }: BudgetRingsProps) {
   const { t } = useTranslation()
   const budgets = (rows ?? [])
-    .filter((row) => row.budget_amount != null && row.budget_amount > 0)
+    // Budgets only count debits, so an income category would sit at 0% forever;
+    // keep rings that saw spending this month or last.
+    .filter(
+      (row) =>
+        row.budget_amount != null &&
+        row.budget_amount > 0 &&
+        (row.actual_amount > 0 || (row.projected_amount ?? 0) > 0 || (row.prev_month_amount ?? 0) > 0),
+    )
     .sort((a, b) => (b.budget_amount ?? 0) - (a.budget_amount ?? 0))
     .slice(0, 4)
 

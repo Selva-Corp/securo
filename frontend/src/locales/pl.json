@@ -2494,14 +2494,14 @@
     "actions": {
       "add": "Add",
       "import": "Import",
-      "subscriptions": "Subscriptions",
+      "subscriptions": "Subs",
       "budgets": "Budgets"
     },
     "tabs": {
       "aria": "Main navigation",
       "home": "Home",
       "transactions": "Activity",
-      "subscriptions": "Subscriptions",
+      "subscriptions": "Subs",
       "budgets": "Budgets",
       "more": "More"
     }
