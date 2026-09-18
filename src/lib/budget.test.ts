@@ -167,6 +167,10 @@ describe("accounts", () => {
   it("nets liabilities out of net worth and skips archived accounts", () => {
     expect(netWorth(accounts)).toBe(550000);
   });
+  it("prefers the synced balance when present", () => {
+    expect(spendableCash([{ ...accounts[0], syncedBalance: 12345 }])).toBe(12345);
+    expect(spendableCash([{ ...accounts[0], syncedBalance: null }])).toBe(80000);
+  });
 });
 
 describe("goalProgress", () => {

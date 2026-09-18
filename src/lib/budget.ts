@@ -202,9 +202,12 @@ export interface AccountLike {
   inSpendable: boolean;
   archived: boolean;
   txnSum: number;
+  /** Provider-reported balance for synced accounts; wins over the computed one. */
+  syncedBalance?: number | null;
 }
 
 export function accountBalance(a: AccountLike): number {
+  if (a.syncedBalance !== null && a.syncedBalance !== undefined) return a.syncedBalance;
   return a.openingBalance + a.txnSum;
 }
 

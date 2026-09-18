@@ -35,6 +35,26 @@ model User {
   transactions  Transaction[]
   goals         Goal[]
   contributions GoalContribution[]
+  connections   BankConnection[]
+}
+
+/// A link to a bank data provider. SimpleFIN is the only provider today.
+model BankConnection {
+  id           String    @id @default(cuid())
+  userId       String
+  provider     String    @default("SIMPLEFIN")
+  displayName  String
+  accessUrlEnc String    // AES-256-GCM encrypted SimpleFIN access URL
+  status       String    @default("ACTIVE") // ACTIVE | NEEDS_RECONNECT | ERROR
+  lastSyncedAt DateTime?
+  lastError    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accounts Account[]
+
+  @@index([userId])
 }
 
 model Account {
@@ -42,15 +62,25 @@ model Account {
   userId         String
   name           String
   type           String   // CHECKING | SAVINGS | CREDIT | CASH | INVESTMENT | LOAN
+  currency       String   @default("USD")
   openingBalance Int      @default(0) // cents, balance before any recorded transaction
   inSpendable    Boolean  @default(true) // counts toward "spendable" cash
   archived       Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Bank sync fields. Null for manual accounts.
+  connectionId  String?
+  externalId    String?   // provider account id
+  institution   String?
+  syncedBalance Int?      // provider-reported balance, cents; authoritative when present
+  syncedAt      DateTime?
+
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  connection   BankConnection? @relation(fields: [connectionId], references: [id], onDelete: SetNull)
   transactions Transaction[]
 
+  @@unique([connectionId, externalId])
   @@index([userId])
 }
 
@@ -84,7 +114,9 @@ model Transaction {
   memo          String?
   reviewedAt    DateTime? // null = still in the review queue
   excluded      Boolean   @default(false) // leave out of budget math (e.g. transfers, refunds)
+  pending       Boolean   @default(false) // bank has not posted it yet
   importHash    String?   // dedupe key for CSV imports
+  externalId    String?   // provider transaction id for synced rows
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -93,6 +125,7 @@ model Transaction {
   category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@unique([userId, importHash])
+  @@unique([accountId, externalId])
   @@index([userId, date])
   @@index([userId, reviewedAt])
   @@index([accountId])
