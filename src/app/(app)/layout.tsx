@@ -1,4 +1,5 @@
 import { LogOut } from "lucide-react";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/server/session";
 import { prisma } from "@/lib/prisma";
 import { logout } from "@/server/actions/auth";
@@ -6,6 +7,7 @@ import { BottomNav, SideNav } from "@/components/nav";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser();
+  if (!user.onboardedAt) redirect("/onboarding");
   const reviewCount = await prisma.transaction.count({ where: { userId: user.id, reviewedAt: null } });
 
   return (

@@ -49,6 +49,7 @@ export async function login(_prev: AuthState, formData: FormData): Promise<AuthS
     if (err instanceof AuthError) return { error: "Email or password is incorrect" };
     throw err;
   }
+  // The app layout sends users who have not finished onboarding to /onboarding.
   redirect("/dashboard");
 }
 
