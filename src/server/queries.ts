@@ -100,3 +100,16 @@ export async function getGoalsWithProgress(userId: string, opts: { includeArchiv
   const savedByGoal = new Map(sums.map((s) => [s.goalId, s._sum.amount ?? 0]));
   return goals.map((g) => ({ ...g, saved: savedByGoal.get(g.id) ?? 0 }));
 }
+
+export type GoalDetail = NonNullable<Awaited<ReturnType<typeof getGoalDetail>>>;
+
+/** One goal with its contributions, newest first. Null when it is not the user's. */
+export async function getGoalDetail(userId: string, goalId: string) {
+  const goal = await prisma.goal.findFirst({
+    where: { id: goalId, userId },
+    include: { contributions: { orderBy: [{ date: "desc" }, { createdAt: "desc" }] } },
+  });
+  if (!goal) return null;
+  const saved = goal.contributions.reduce((s, c) => s + c.amount, 0);
+  return { ...goal, saved };
+}
