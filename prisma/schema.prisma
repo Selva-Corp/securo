@@ -1,0 +1,133 @@
+// Securo data model.
+// All money amounts are stored as integer minor units (cents).
+// Transaction.amount is signed: negative = money out, positive = money in.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Budget settings
+  currency        String    @default("USD")
+  monthlyIncome   Int       @default(0) // expected take-home per month, cents
+  needsPct        Int       @default(50)
+  wantsPct        Int       @default(30)
+  savingsPct      Int       @default(20)
+  payFrequency    String    @default("BIWEEKLY") // WEEKLY | BIWEEKLY | SEMIMONTHLY | MONTHLY
+  paycheckAmount  Int       @default(0) // cents
+  nextPayDate     DateTime?
+  onboardedAt     DateTime?
+
+  accounts      Account[]
+  categories    Category[]
+  transactions  Transaction[]
+  goals         Goal[]
+  contributions GoalContribution[]
+}
+
+model Account {
+  id             String   @id @default(cuid())
+  userId         String
+  name           String
+  type           String   // CHECKING | SAVINGS | CREDIT | CASH | INVESTMENT | LOAN
+  openingBalance Int      @default(0) // cents, balance before any recorded transaction
+  inSpendable    Boolean  @default(true) // counts toward "spendable" cash
+  archived       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@index([userId])
+}
+
+model Category {
+  id           String   @id @default(cuid())
+  userId       String
+  name         String
+  bucket       String   // NEEDS | WANTS | SAVINGS_DEBT | INCOME
+  icon         String   @default("tag")
+  monthlyLimit Int?     // optional per-category cap, cents
+  sortOrder    Int      @default(0)
+  archived     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@unique([userId, name])
+  @@index([userId, bucket])
+}
+
+model Transaction {
+  id            String    @id @default(cuid())
+  userId        String
+  accountId     String
+  categoryId    String?
+  date          DateTime
+  amount        Int       // cents, signed
+  payee         String
+  memo          String?
+  reviewedAt    DateTime? // null = still in the review queue
+  excluded      Boolean   @default(false) // leave out of budget math (e.g. transfers, refunds)
+  importHash    String?   // dedupe key for CSV imports
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account  Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, importHash])
+  @@index([userId, date])
+  @@index([userId, reviewedAt])
+  @@index([accountId])
+}
+
+model Goal {
+  id           String    @id @default(cuid())
+  userId       String
+  name         String
+  kind         String    @default("SAVINGS") // SAVINGS | DEBT
+  targetAmount Int       // cents
+  targetDate   DateTime?
+  icon         String    @default("target")
+  color        String    @default("emerald")
+  archived     Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contributions GoalContribution[]
+
+  @@index([userId])
+}
+
+model GoalContribution {
+  id        String   @id @default(cuid())
+  userId    String
+  goalId    String
+  amount    Int      // cents, positive adds to the goal, negative withdraws
+  date      DateTime
+  note      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId])
+}
