@@ -1,4 +1,0 @@
-# Dominican Republic. The RNC for companies; an individual is billed
-# against their cedula, which uses the same field.
-code = "DO"
-kinds = ["rnc"]

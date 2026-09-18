@@ -1,4 +1,0 @@
-# China. The USCC replaced the separate business, tax and organisation
-# codes with one eighteen-character identifier.
-code = "CN"
-kinds = ["uscc"]

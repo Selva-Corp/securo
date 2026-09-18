@@ -1,4 +1,0 @@
-# Colombia. The NIT is written with a verification digit, but quoting it
-# without one is common and is not an error.
-code = "CO"
-kinds = ["co_nit"]

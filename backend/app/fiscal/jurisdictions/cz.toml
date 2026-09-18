@@ -1,4 +1,0 @@
-# Czechia. ICO is the company register id, DIC the tax one, which is the
-# ICO behind a CZ prefix.
-code = "CZ"
-kinds = ["ico", "vat"]
